@@ -6,7 +6,7 @@ module.exports = app => {
     const authApi = app.src.api.auth;
     const passport = app.src.config.passport;
 
-    app.post('/login', authApi.login);
+    app.post('/signin', authApi.signin);
     app.post('/signup', userApi.save);
     app.post('/validatetoken', authApi.validateToken);
 
@@ -23,6 +23,10 @@ module.exports = app => {
         .all(passport.authenticate())
         .post(taskApi.save)
         .get(taskApi.getAll)
+    
+    app.route('/tasks/daily')
+        .all(passport.authenticate())
+        .get(taskApi.getDialyTasks)
     
     app.route('/tasks/:id')
         .all(passport.authenticate())

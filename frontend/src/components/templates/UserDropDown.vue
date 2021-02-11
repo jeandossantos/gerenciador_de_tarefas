@@ -1,14 +1,15 @@
 <template>
     <div class="user-dropdown">
         <div class="user-button">
-            <div class="user-name mr-2">Jean dos Santos</div>
+            <div class="user-name mr-2 text-center"><strong>Jean dos Francisco dos Santos</strong></div>
             <div class="user-initiais d-flex justify-content-center align-items-center">JS</div>
+            <div class="user-icon ml-2"><i class="fas fa-chevron-down"></i></div>
         </div>
         <div class="dropdown-content">
-            <router-link to="/">Home</router-link>
-            <router-link to="/">Tarefas</router-link>
-            <router-link to="/">Profile</router-link>
-            <router-link to="/">Sair</router-link>
+            <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
+            <router-link to="/"><i class="fas fa-tasks"></i> Tarefas</router-link>
+            <router-link to="/"><i class="fas fa-user-circle"></i> Profile</router-link>
+            <router-link to="/"><i class="fas fa-sign-out-alt"></i> Sair</router-link>
         </div>
     </div>
 </template>
@@ -43,13 +44,14 @@ export default {
     .user-dropdown .dropdown-content {
         display: none;
         position: absolute;
+        right: 5px;
     }
 
     .user-dropdown .user-button .user-initiais {
         background-color: #fff;
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
         font-weight: 900;
         color: #777;
         padding: 10px;
@@ -89,6 +91,12 @@ export default {
         background-color: #00bf8f;
         transition: 0.2s;
         color: #f7f7f7;
+    }
+
+    @media only screen and (max-width: 600px) {
+            .user-dropdown .user-name {
+                display: none;
+            }
     }
 
 </style>

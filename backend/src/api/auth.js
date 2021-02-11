@@ -5,7 +5,7 @@ const { authSecret } = require('../../.env');
 
 module.exports = app => {
 
-    const login = async (req, resp) => {
+    const signin = async (req, resp) => {
         const data = { ...req.body };
 
         if(!data.email || !data.password) return resp.status(400).send('Informe E-mail e senha');
@@ -49,5 +49,5 @@ module.exports = app => {
         return resp.status(401).send(false)
     }
 
-    return { login, validateToken }
+    return { signin, validateToken }
 }

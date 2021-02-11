@@ -10,8 +10,10 @@ module.exports = app => {
                                 .where({ user_id: userId, done: false })
                                 .where('deadline', '>=', `${today} ${date.getHours()}:${date.getMinutes()}`)
                                 .where('deadline', '<=', `${today} 23:59:59`).count('id').first();
+                                
         const tasksFinished = await knex('tasks')
                                 .where({ user_id: userId, done: true }).count('id').first();
+
         const tasksCount = await knex('tasks')
                                 .where({ user_id: userId }).count('id').first();
 

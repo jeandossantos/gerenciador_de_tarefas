@@ -1,6 +1,6 @@
 <template>
   <div class="page-title">
-    <h2 class="tittle"><i :class="icon"></i>{{ title }}</h2>
+    <h2 class="tittle"><i :class="icon"></i> {{ title }}</h2>
     <p class="subtitle">{{ subtitle }}</p>
     <hr>    
   </div>
@@ -14,6 +14,7 @@ export default {
 </script>
 
 <style scoped>
+
     .page-title h2{
         color: #777;
         margin-top: 5px;
