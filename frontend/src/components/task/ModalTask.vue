@@ -1,6 +1,6 @@
 <template>
-    <div class="modal-task d-flex justify-content-end">
-        <b-button size="lg" title="Criar nova Tarefa" v-b-modal.modal-task><i class="fas fa-plus-square"></i> Nova Tarefa</b-button>
+    <div class="modal-task d-flex justify-content-end mb-3">
+        <b-button title="Criar nova Tarefa" v-b-modal.modal-task><i class="fas fa-plus-square"></i> <b>Nova Tarefa</b></b-button>
         <b-modal hide-footer  header-bg-variant="success" centered header-text-variant="light"
         @hidden = "reset"
         title="Cadastro de Tarefa" id="modal-task">
@@ -85,7 +85,11 @@ export default {
     },
     methods: {
         save() {
-            this.$store.dispatch('save', { task: this.task, reset: this.reset })
+            this.$store.dispatch('save', {
+                task: this.task,
+                reset: this.reset,
+                alert: this.$toasts
+            });
         },
         stateName() {
             return this.task.name && this.task.name.length > 3  ? true : false;

@@ -16,6 +16,7 @@
     "luxon": "^1.25.0",
     "vue": "^2.6.12",
     "vue-datetime": "^1.0.0-beta.14",
+    "vue-my-toasts": "^1.0.5",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },

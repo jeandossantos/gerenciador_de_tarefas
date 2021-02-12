@@ -16,6 +16,14 @@ export default {
     Header,
     Content,
     Footer
+  },
+  data: function() {
+    return {
+
+    }
+  },
+  methods: {
+    
   }
 }
 </script>

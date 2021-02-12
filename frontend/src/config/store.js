@@ -31,13 +31,15 @@ const store = new Vuex.Store({
         save(context, payload) {
             const url = payload.task.id ? `/tasks/${payload.task.id}` : '/tasks';
             const method = payload.task.id ? 'put' : 'post';
-
+            const msg = method === 'post' ? 'Tarefa Criada com sucesso!' : 'Tarefa editada com sucesso!';
             axios[method](url, payload.task)
               .then(() => {
+                payload.alert.success(msg);
                 context.dispatch('loadDailyTasks');
                 context.dispatch('loadAllTasks');
                 payload.reset();
               })
+              .catch(e => payload.alert.error(e.response.data))
 
         },
         loadDailyTasks(context, payload) {
@@ -56,16 +58,18 @@ const store = new Vuex.Store({
                     context.commit('setAllTasks', resp.data);
                 })
         },
-        remove(context, id) {
-            axios.delete(`/tasks/${id}`)
+        remove(context, payload) {
+            axios.delete(`/tasks/${payload.id}`)
             .then(() => {
+                payload.alert.success('Tarefa removida!');
                 context.dispatch('loadDailyTasks');
                 context.dispatch('loadAllTasks');
             })
         },
-        finished(context, id) {
-            axios.post(`/tasks/finish/${id}`)
+        finished(context, payload) {
+            axios.post(`/tasks/finish/${payload.id}`)
             .then(() => {
+                payload.alert.success('Tarefa finalizada!');
                 context.dispatch('loadDailyTasks');
                 context.dispatch('loadAllTasks');
             })

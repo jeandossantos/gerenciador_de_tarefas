@@ -4,10 +4,11 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/solid';
 import 'vue-datetime/dist/vue-datetime.css';
 
+import './config/toast';
+import store from './config/store';
 import { Datetime } from 'vue-datetime';
 
 import App from './components/App.vue';
-import store from './config/store';
 import router from './config/router';
 
 import axios from 'axios';

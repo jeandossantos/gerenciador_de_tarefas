@@ -1,8 +1,8 @@
 <template>
     <div class="all-tasks">
-        <div class="search d-flex justify-content-center">
+        <div class="search mt-2 d-flex justify-content-center">
             <b-input-group  id="type-search" class="mb-3" prepend="Pesquisar">
-                <b-form-input v-model="searchValue" type="search"></b-form-input>
+                <b-form-input @change="voidSeach" v-model.lazy="searchValue" type="search"></b-form-input>
                 <b-input-group-append>
                   <b-button @click="search"  text="Button"><i class="fas fa-search"></i></b-button>
                 </b-input-group-append>
@@ -17,6 +17,9 @@
                   <b-button size="sm" title="Editar Tarefa" @click="loadTask(row.item, 'edit')"  class="ml-2"  variant="warning"><i class="fas fa-edit"></i></b-button>
                   <b-button size="sm" title="Excluir Tarefa" @click="remove(row.item.id) " class="ml-2" variant="danger"><i class="fas fa-trash-alt"></i></b-button>
         </template>
+        <template #cell(name)="data"> 
+          <b class="text-name"> {{ data.item.name }} </b> 
+        </template >
          <template #cell(done)="data"> 
           <b :class="getStatusClass(data.item)"  > {{ getStatus(1, 2, data.item) }} </b> 
         </template >
@@ -83,21 +86,63 @@ export default {
       },
     methods: {
         remove(id) {
-          this.$store.dispatch('remove', id);
+          this.$bvModal.msgBoxConfirm('Você deseja remover essa tarefa?', {
+            title: 'Por favor, corfirme',
+            size: 'sm',
+            buttonSize: 'sm',
+            okTitle: 'Não',
+            cancelVariant: 'primary',
+            okVariant: '',
+            cancelTitle: 'Sim',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+        })
+          .then(value => {
+            if(!value) {
+              this.$store.dispatch('remove', { id, alert: this.$toasts });
+            }
+          })
+          .catch(() => {})
         },
         finished(id) {
-          this.$store.dispatch('finished', id);
+          this.$bvModal.msgBoxConfirm('Você deseja remover essa tarefa?', {
+            title: 'Por favor, corfirme',
+            size: 'sm',
+            buttonSize: 'sm',
+            okTitle: 'Não',
+            cancelVariant: 'primary',
+            okVariant: '',
+            cancelTitle: 'Sim',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+        })
+          .then(value => {
+            if(!value) {
+              this.$store.dispatch('finished', { id, alert: this.$toasts });
+            }
+          })
+          .catch(() => {})
         },
         loadAllTasks() {
           this.$store.dispatch('loadAllTasks', { page: this.page, search: this.searchValue })
         },
         search() {
           this.$store.dispatch('loadAllTasks', { search: this.searchValue });
+        },
+        voidSeach() {
+          if(this.searchValue === '') {
+            this.search();
+          }
         }
     },
    watch: {
         page() {
             this.loadAllTasks();
+        },
+        searchValue() {
+          this.voidSeach();
         }
     }
 }

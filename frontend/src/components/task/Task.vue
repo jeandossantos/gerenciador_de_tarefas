@@ -4,7 +4,7 @@
       subtitle="Crie, pesquise, atualize e remova suas tarefas nessa página." />
       <div class="task-table mt-4">
         <ModalTask :mode="mode" :task="task" :reset="reset"  />
-        <b-tabs content-class="mt-3" align="center" lazy>
+        <b-tabs align="center" lazy>
           <b-tab title="Tarefas do Dia" active>
             <DialyTasks :getStatusClass="getStatusClass" :loadTask="loadTask" :fields="fields" 
             :getStatus="getStatus" :getPriority="getPriority" :formatterDate="formatterDate" :mode="mode" 
@@ -63,6 +63,7 @@ export default {
           } else if(task.done) {
             return 'Finalizada';
           } else {
+
             return 'Em Espera';
           }
         },
@@ -136,4 +137,7 @@ export default {
     width: 400px;
   }
 
+  .task .text-name {
+    color: #777;
+  }
 </style>
