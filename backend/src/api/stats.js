@@ -4,23 +4,20 @@ module.exports = app => {
 
     const stats = async (req, resp) => {
         const userId = req.user.id;
-        const date = new Date();
-        const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-        const tasksTodayCount = await knex('tasks')
-                                .where({ user_id: userId, done: false })
-                                .where('deadline', '>=', `${today} ${date.getHours()}:${date.getMinutes()}`)
-                                .where('deadline', '<=', `${today} 23:59:59`).count('id').first();
-                                
-        const tasksFinished = await knex('tasks')
-                                .where({ user_id: userId, done: true }).count('id').first();
+        const date = new Date().getTime();
 
-        const tasksCount = await knex('tasks')
-                                .where({ user_id: userId }).count('id').first();
+        const uncompletedTasks = await knex('tasks').where({ user_id: userId, done: false });
+        
+        const expiredTasksCount = uncompletedTasks.filter(task => new Date(task.deadline).getTime() < date);
+        
+        const finishedTasksCount = await knex('tasks').where({ user_id: userId, done: true }).count('id').first();
+
+        const totaltasksCount = await knex('tasks').where({ user_id: userId }).count('id').first();
 
         resp.json({
-            tasksTodayCount: tasksTodayCount.count,
-            tasksFinished: tasksFinished.count,
-            tasksCount: tasksCount.count
+            finishedTasksCount: finishedTasksCount.count,
+            expiredTasksCount: (expiredTasksCount.length).toString(),
+            totaltasksCount: totaltasksCount.count
         });
     }
 

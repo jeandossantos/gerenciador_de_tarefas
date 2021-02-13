@@ -1,14 +1,14 @@
 <template>
-    <div class="user-dropdown">
+    <div class="user-dropdown" @click="showDropDownContent = !showDropDownContent">
         <div class="user-button">
             <div class="user-name mr-2 text-center"><strong>Jean dos Francisco dos Santos</strong></div>
             <div class="user-initiais d-flex justify-content-center align-items-center">JS</div>
             <div class="user-icon ml-2"><i class="fas fa-chevron-down"></i></div>
         </div>
-        <div class="dropdown-content">
-            <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
-            <router-link to="/"><i class="fas fa-tasks"></i> Tarefas</router-link>
-            <router-link to="/"><i class="fas fa-user-circle"></i> Profile</router-link>
+        <div v-if="showDropDownContent"  class="dropdown-content">
+            <router-link to="/home"><i class="fas fa-home"></i> Home</router-link>
+            <router-link to="/tasks"><i class="fas fa-tasks"></i> Tarefas</router-link>
+            <router-link to="/profile"><i class="fas fa-user-circle"></i> Profile</router-link>
             <router-link to="/"><i class="fas fa-sign-out-alt"></i> Sair</router-link>
         </div>
     </div>
@@ -16,7 +16,12 @@
 
 <script>
 export default {
-    name: 'UserDropDown'
+    name: 'UserDropDown',
+    data: function() {
+        return {
+            showDropDownContent: false
+        }
+    }
 }
 </script>
 
@@ -42,9 +47,17 @@ export default {
     }
 
     .user-dropdown .dropdown-content {
-        display: none;
+        display: flex;
+        flex-direction: column;
+
+        margin-top: 10px;
         position: absolute;
         right: 5px;
+        min-width: 230px;
+        background-color: #f7f7f7;
+        border-radius: 5px;
+        transition: 0.5s;
+        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     }
 
     .user-dropdown .user-button .user-initiais {
@@ -64,30 +77,14 @@ export default {
         cursor: pointer;
     }
 
-    .user-dropdown:hover .dropdown-content {
-        display: flex;
-        flex-direction: column;
-        min-width: 230px;
-        background-color: #f7f7f7;
-        border-radius: 5px;
-        transition: 0.5s;
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-        
-    }
-
-    .user-dropdown .dropdown-content:hover {
-        margin-top: 5px;
-        transition: 0.5s;
-    }
-
-    .user-dropdown:hover  a {
+    .dropdown-content  a {
         color: #777;
         text-decoration: none;
         padding: 5px 10px;
         border-bottom: 1px solid #e2e6e5;
     }
 
-    .user-dropdown:hover  a:hover {
+    .dropdown-content  a:hover {
         background-color: #00bf8f;
         transition: 0.2s;
         color: #f7f7f7;

@@ -8,6 +8,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
+        user: null,
+        isDropDownVisible: false,
         dailyTasks: [],
         dailyTasksCount: 0,
         dailyTasksLimit: 0,
@@ -32,23 +34,24 @@ const store = new Vuex.Store({
             const url = payload.task.id ? `/tasks/${payload.task.id}` : '/tasks';
             const method = payload.task.id ? 'put' : 'post';
             const msg = method === 'post' ? 'Tarefa Criada com sucesso!' : 'Tarefa editada com sucesso!';
+            
             axios[method](url, payload.task)
               .then(() => {
                 payload.alert.success(msg);
+                payload.reset();
                 context.dispatch('loadDailyTasks');
                 context.dispatch('loadAllTasks');
-                payload.reset();
               })
               .catch(e => payload.alert.error(e.response.data))
 
         },
         loadDailyTasks(context, payload) {
             const data = { ...payload };
+            
             axios(`/tasks/daily?page=${data.page|| 1}&search=${data.search || ''}`)
                 .then(resp => {
                     context.commit('setDailyTasks', resp.data);
                 })
-                .catch(e => console.log(e.response.data))
         },
         loadAllTasks(context, payload) {
             const data = {...payload };

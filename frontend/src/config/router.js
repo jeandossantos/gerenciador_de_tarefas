@@ -10,11 +10,6 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        component: Task,
-        name: 'Task'
-    },
-    {
-        path: '/',
         component: Signin,
         name: 'Signin'
     },
@@ -27,7 +22,12 @@ const routes = [
         path: '/home',
         component: Home,
         name: 'Home'
-    }
+    },
+    {
+        path: '/tasks',
+        component: Task,
+        name: 'Task'
+    },
 ]
 
 const router = new VueRouter({
