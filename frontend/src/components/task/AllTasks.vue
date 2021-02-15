@@ -137,6 +137,9 @@ export default {
           }
         }
     },
+    created() {
+      this.$store.dispatch('loadAllTasks');
+    },
    watch: {
         page() {
             this.loadAllTasks();

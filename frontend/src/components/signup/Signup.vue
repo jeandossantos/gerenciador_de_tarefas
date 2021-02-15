@@ -63,7 +63,7 @@
             required
             ></b-form-input>
       </b-form-group>
-      <b-button type="submit"  class="mr-2" variant="primary">Criar</b-button>
+      <b-button @click="signup" class="mr-2" variant="primary">Criar</b-button>
       <b-button type="reset" variant="danger">Cancelar</b-button>
       <hr>
     <p class="text-center small"><router-link to="/">Voltar</router-link></p>
@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Signup',
     data: function() {
@@ -83,6 +85,13 @@ export default {
     methods: {
         reset() {
             this.user = {};
+        },
+        signup() {
+            axios.post('/signup', this.user)
+                .then(() => {
+                    this.$toasts.success('Usuário criado com sucesso!');
+                })
+                .catch(e => this.$toasts.error(e.response.data))
         }
     }
 }

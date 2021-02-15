@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.headers.Authorization = " bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkplYW4gZG9zIFNhbnRvcyIsImluaXRpYWlzIjoiSlMiLCJlbWFpbCI6ImplYW5kZGdAaG90bWFpbC5jb20iLCJhZG1pbiI6ZmFsc2V9.h3x-kTks5RapPxrAhiiqJcTYDwB_jMdkEj08-UjfTc0";
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -18,6 +18,19 @@ const store = new Vuex.Store({
         allTasksLimit: 0
     },
     mutations: {
+        setUser(state, payload = null) {
+          if(payload !== undefined) {
+              state.user = payload;
+          }
+
+          if(state.user !== null) {
+              state.isDropDownVisible = true;
+              axios.defaults.headers.common['Authorization'] = `bearer ${state.user.token}`; 
+          } else {
+              state.isDropDownVisible = false;
+              delete axios.defaults.headers.common['Authorization'];
+          }
+        },
         setDailyTasks(state, payload) {
             state.dailyTasks = payload.data;
             state.dailyTasksCount = payload.count;
@@ -30,6 +43,9 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        loadToken() {
+
+        },
         save(context, payload) {
             const url = payload.task.id ? `/tasks/${payload.task.id}` : '/tasks';
             const method = payload.task.id ? 'put' : 'post';
@@ -79,10 +95,5 @@ const store = new Vuex.Store({
         }
     }
 })
-
-Promise.all([
-    store.dispatch('loadDailyTasks'),
-    store.dispatch('loadAllTasks')
-])
 
 export default store;

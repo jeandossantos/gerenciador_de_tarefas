@@ -137,6 +137,9 @@ export default {
           }
         }
     },
+    created() {
+      this.$store.dispatch('loadDailyTasks');
+    },
    watch: {
         page() {
             this.loadDailyTasks();

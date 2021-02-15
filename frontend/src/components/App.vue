@@ -1,29 +1,65 @@
 <template>
   <div id="app">
-    <Header />
-    <Content />
+    <Header :showDropDown="isDropDownVisible" :user="user" />
+    <Loading v-if="validatingToken" />
+    <Content v-else/>
     <Footer />
   </div>
 </template>
 
 <script>
+import { key } from '@/config/global';
+import axios from 'axios';
+import { mapState } from 'vuex';
+
 import Header from './templates/Header';
 import Content from './templates/Content';
 import Footer from './templates/Footer';
+import Loading from './templates/Loading';
+
+
 export default {
   name: 'App',
   components: {
     Header,
     Content,
-    Footer
+    Footer,
+    Loading
   },
+  computed: mapState(["user", "isDropDownVisible"]),
   data: function() {
     return {
-
+      validatingToken: true
     }
   },
   methods: {
-    
+    async validateToken() {
+      this.validatingToken = true;
+      
+      this.$store.commit('setUser', null);
+      const data = localStorage.getItem(key);
+      const userData = JSON.parse(data);
+
+      if(!userData) {
+        this.validatingToken = false;
+        this.$router.push({ path: '/'}).catch(() => {});
+        return
+      }
+        
+      const rs = await axios.post('/validatetoken', userData);
+
+      if(rs.data) {
+        this.$store.commit('setUser', userData);
+      } else {
+        localStorage.removeItem(key);
+        this.$router.push({ path: '/'}).catch(() => {});
+      }
+
+      this.validatingToken = false;
+    }
+  },
+  created() {
+    this.validateToken();
   }
 }
 </script>

@@ -26,7 +26,7 @@
             required
             ></b-form-input>
           </b-form-group>
-          <b-button type="submit"  class="mr-2" variant="primary">Entrar</b-button>
+          <b-button  @click="signin"  class="mr-2" variant="primary">Entrar</b-button>
           <b-button type="reset" variant="danger">Cancelar</b-button>
           <hr>
           <p class="text-center small">ou crie sua conta <router-link to="/signup">aqui</router-link></p>
@@ -36,6 +36,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { key } from '@/config/global';
+
 export default {
     name: 'Signin',
     data: function() {
@@ -46,6 +49,15 @@ export default {
     methods: {
         reset() {
             this.login = {};
+        },
+        signin() {
+            axios.post('/signin', this.login)
+                .then(resp => {
+                    this.$store.commit('setUser', resp.data);
+                    localStorage.setItem(key, JSON.stringify(resp.data));
+                    this.$router.push({ path: '/home'});
+                })
+                .catch(e => this.$toasts.error(e.response.data))
         }
     }
 }

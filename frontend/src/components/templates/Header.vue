@@ -1,7 +1,7 @@
 <template>
   <div class="header d-flex justify-content-between align-items-center">
       <h1><img src="@/assets/imgs/icon.png" alt="NovaTask"></h1>
-      <UserDropDown />
+      <UserDropDown v-if="showDropDown" />
   </div>
 </template>
 
@@ -9,7 +9,8 @@
 import UserDropDown from "./UserDropDown";
 export default {
     name:'Header',
-    components: { UserDropDown }
+    components: { UserDropDown },
+    props: ["showDropDown"]
 }
 </script>
 

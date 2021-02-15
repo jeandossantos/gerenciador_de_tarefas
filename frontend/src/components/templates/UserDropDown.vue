@@ -1,8 +1,8 @@
 <template>
     <div class="user-dropdown" @click="showDropDownContent = !showDropDownContent">
         <div class="user-button">
-            <div class="user-name mr-2 text-center"><strong>Jean dos Francisco dos Santos</strong></div>
-            <div class="user-initiais d-flex justify-content-center align-items-center">JS</div>
+            <div class="user-name mr-2 text-center"><strong>{{ user.name }}</strong></div>
+            <div class="user-initiais d-flex justify-content-center align-items-center">{{ user.initiais }}</div>
             <div class="user-icon ml-2"><i class="fas fa-chevron-down"></i></div>
         </div>
         <div v-if="showDropDownContent"  class="dropdown-content">
@@ -15,8 +15,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     name: 'UserDropDown',
+    computed: mapState(["user"]),
     data: function() {
         return {
             showDropDownContent: false

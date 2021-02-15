@@ -34,19 +34,19 @@ module.exports = app => {
 
     const validateToken = async (req, resp) => {
         const data = req.body || null;
-        console.log(req.body)
+
         try {
             const payload = jwt.decode(data.token, authSecret);
 
             const userFromDB = await app.connection('users').where({ id: payload.id, email: payload.email }).first();
-            console.log(userFromDB)
-            if(!userFromDB) resp.status(401).send(false);
+
+            if(!userFromDB) return resp.send(false);
 
             return resp.send(true);
         } catch (msg) {
-            console.log(msg)
+
         }
-        return resp.status(401).send(false)
+        return resp.send(false);
     }
 
     return { signin, validateToken }
