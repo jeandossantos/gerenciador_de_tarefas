@@ -22,8 +22,7 @@ module.exports = app => {
             id: user.id,
             name: user.name,
             initiais: user.initiais,
-            email: user.email,
-            admin: user.admin
+            email: user.email
         };
 
         return resp.json({

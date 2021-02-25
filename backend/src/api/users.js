@@ -13,10 +13,6 @@ module.exports = app => {
     const save = async (req, resp) => {
         const user = { ...req.body };
 
-        if(!req.originalUrl.startsWith('/users') 
-            || !req.user 
-            || !req.user.admin) user.admin = false;
-
         const tarefaDefault = {
             name: 'Primeiro Login',
             description: 'Está é uma tarefa criada por padrão pelo sistema.',
@@ -31,10 +27,11 @@ module.exports = app => {
             existsOrError(user.name, 'Nome é Obrigatório');
             existsOrError(user.initiais, 'Iniciais é Obrigatório');
             existsOrError(user.email, 'E-mail é Obrigatório');
-            existsOrError(user.password, 'Senha é Obrigatório');
-            equalsOrError(user.password, user.confirmPassword, 'Senha não Coincidem');
-
+            
             if(!user.id) {
+                existsOrError(user.password, 'Senha é Obrigatório');
+                equalsOrError(user.password, user.confirmPassword, 'Senha não Coincidem');
+
                 const userFromDB = await knex('users').where({ email: user.email }).first();
                 
                 notExistsOrError(userFromDB, 'Usuário já Cadastrado');
@@ -75,27 +72,39 @@ module.exports = app => {
         }
     }
 
-    const getAll = (req, resp) => {
-        knex('users')
-            .select('id', 'name', 'initiais', 'email', 'createdAt', 'updateAt')
-            .then(users => resp.json(users))
-            .catch(_ => resp.status(500).send())
-    }
+    const updatePassword = async(req, resp) => {
+        const { oldPassword, newPassword, confirmNewPassword } = req.body;
 
-    const softDelete = (req, resp) => {
+        try {
+            equalsOrError(newPassword, confirmNewPassword, 'Senhas Não coincidem!');
+            
+            const user = await knex('users').where({ id: req.user.id }).first();
+            const isMatch = bcrypt.compareSync(oldPassword, user.password);
+
+            if(!isMatch) return resp.status(400).send('Senha do usuário incorreta!');
+        } catch (msg) {
+            return resp.status(400).send(msg);            
+        }
+
         knex('users')
-            .update({ deletedAt: new Date() })
+            .update({ password: newPassword })
+            .where({ id: user.id })
             .then(_ => resp.status(204).send())
             .catch(_ => resp.status(500).send())
     }
 
-    const remove = (req, resp) => {
+    const remove = async (req, resp) => {
+            const user = await knex('users').where({ id: req.params.id }).first();
+            const isMatch = bcrypt.compareSync(req.params.password, user.password);
+    
+            if(!isMatch) return resp.status(400).send('Senha do usuário incorreta!');
+        
         knex('users')
             .where({ id: req.params.id })
             .del()
             .then(_ => resp.status(204).send())
             .catch(_ => resp.status(500).send())
     }
-
-    return { save, getAll, softDelete, remove }
+    
+    return { save, updatePassword, remove }
 }

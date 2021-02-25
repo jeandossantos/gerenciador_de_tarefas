@@ -9,15 +9,11 @@ module.exports = app => {
     app.post('/signin', authApi.signin);
     app.post('/signup', userApi.save);
     app.post('/validatetoken', authApi.validateToken);
-
-    app.route('/users')
-        .all(passport.authenticate())
-        .put(userApi.save)
         
     app.route('/users/:id')
         .all(passport.authenticate())
-        .delete(userApi.softDelete)
-
+        .delete(userApi.remove)
+        .put(userApi.save)
 
     app.route('/tasks')
         .all(passport.authenticate())

@@ -53,7 +53,7 @@ const store = new Vuex.Store({
             
             axios[method](url, payload.task)
               .then(() => {
-                payload.alert.success(msg);
+                payload.alert.ssuccess(msg);
                 payload.reset();
                 context.dispatch('loadDailyTasks');
                 context.dispatch('loadAllTasks');

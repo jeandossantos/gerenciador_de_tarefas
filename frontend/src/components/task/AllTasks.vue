@@ -8,7 +8,7 @@
                 </b-input-group-append>
               </b-input-group>         
           </div>
-        <b-table :items="allTasks" :fields="fields" striped responsive="sm">
+        <b-table :items="allTasks" :fields="fields" striped responsive="sm" show-empty>
               <template #cell(show_details)="row">
                   <b-button size="sm" title="Mostrar detalhes" @click="row.toggleDetails">
                       <i :class="[row.detailsShowing ? 'fas fa-eye-slash' : 'fas fa-eye']"></i>
@@ -26,6 +26,11 @@
         <template #cell(priority)="data"> 
           <b :class="getPriorityClass(data.item.priority)"  > {{ getPriority(data.item.priority) }} </b> 
         </template >
+        <template #empty="scope">
+          <h5 class="text-center ">
+            {{ scope.items.length === 0 ? 'Tarefas não encontras...': '' }}
+          </h5>
+        </template>
         <template #row-details="row">
           <b-card>
             <b-row class="mb-2">

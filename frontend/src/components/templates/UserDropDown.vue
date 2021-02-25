@@ -8,14 +8,15 @@
         <div v-if="showDropDownContent"  class="dropdown-content">
             <router-link to="/home"><i class="fas fa-home"></i> Home</router-link>
             <router-link to="/tasks"><i class="fas fa-tasks"></i> Tarefas</router-link>
-            <router-link to="/profile"><i class="fas fa-user-circle"></i> Profile</router-link>
-            <router-link to="/"><i class="fas fa-sign-out-alt"></i> Sair</router-link>
+            <router-link to="/profile"><i class="fas fa-user-circle"></i> Perfil</router-link>
+            <a @click.prevent="signin" class="exit"><i class="fas fa-sign-out-alt"></i> Sair</a>
         </div>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { key } from '@/config/global';
 
 export default {
     name: 'UserDropDown',
@@ -23,6 +24,13 @@ export default {
     data: function() {
         return {
             showDropDownContent: false
+        }
+    },
+    methods: {
+        signin() {
+            localStorage.removeItem(key);
+            this.$store.commit('setUser', null);
+            this.$router.push({ path: '/' }).catch(() => {});
         }
     }
 }
@@ -97,6 +105,15 @@ export default {
             .user-dropdown .user-name {
                 display: none;
             }
+    }
+
+    .dropdown-content a.exit {
+        z-index: 1;
+    }
+
+    .dropdown-content a.exit:hover {
+        background: #dc3545;
+        
     }
 
 </style>
