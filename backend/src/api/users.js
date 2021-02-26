@@ -72,13 +72,14 @@ module.exports = app => {
         }
     }
 
-    const updatePassword = async(req, resp) => {
+    const updatePassword = async (req, resp) => {
         const { oldPassword, newPassword, confirmNewPassword } = req.body;
-
+        
         try {
             equalsOrError(newPassword, confirmNewPassword, 'Senhas Não coincidem!');
             
-            const user = await knex('users').where({ id: req.user.id }).first();
+            const user = await knex('users').where({ id: req.params.id }).first();
+            console.log(req.user)
             const isMatch = bcrypt.compareSync(oldPassword, user.password);
 
             if(!isMatch) return resp.status(400).send('Senha do usuário incorreta!');
@@ -86,17 +87,22 @@ module.exports = app => {
             return resp.status(400).send(msg);            
         }
 
+        const password = encryptPassword(newPassword);
+
         knex('users')
-            .update({ password: newPassword })
-            .where({ id: user.id })
-            .then(_ => resp.status(204).send())
-            .catch(_ => resp.status(500).send())
+        .update({ password: password })
+        .where({ id: req.params.id })
+        .then(_ => resp.status(204).send())
+        .catch(_ => resp.status(500).send())
+
     }
 
     const remove = async (req, resp) => {
+        const password = req.headers.userpassword;
+
             const user = await knex('users').where({ id: req.params.id }).first();
-            const isMatch = bcrypt.compareSync(req.params.password, user.password);
-    
+            const isMatch = bcrypt.compareSync(password, user.password);
+
             if(!isMatch) return resp.status(400).send('Senha do usuário incorreta!');
         
         knex('users')

@@ -11,9 +11,13 @@ module.exports = app => {
     app.post('/validatetoken', authApi.validateToken);
         
     app.route('/users/:id')
+    .all(passport.authenticate())
+    .delete(userApi.remove)
+    .put(userApi.save)
+    
+    app.route('/users/update/:id')
         .all(passport.authenticate())
-        .delete(userApi.remove)
-        .put(userApi.save)
+        .put(userApi.updatePassword)
 
     app.route('/tasks')
         .all(passport.authenticate())

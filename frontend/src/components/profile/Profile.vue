@@ -1,5 +1,48 @@
 <template>
     <div class="profile">
+         <b-modal
+        hide-footer
+        id="update-password"
+        title="Mudança de senha"
+        centered>
+            <form>
+                <b-form-group
+                label="Senha Atual:"
+                label-for="old-password"                
+                >
+                <b-form-input
+                    id="oldPassword"
+                    type="password"
+                    v-model="passwords.oldPassword"
+                    required
+                ></b-form-input>
+                </b-form-group>
+                <b-form-group
+                label="Nova Senha:"
+                label-for="newPassword"                
+                >
+                <b-form-input
+                    id="newPassword"
+                    type="password"
+                    v-model="passwords.newPassword"
+                    required
+                ></b-form-input>
+                </b-form-group>
+                <b-form-group
+                label="Confirme a nova Senha:"
+                label-for="confirmNewPassword"                
+                >
+                <b-form-input
+                    id="confirmNewPasswordt"
+                    type="password"
+                    v-model="passwords.confirmNewPassword"
+                    required
+                ></b-form-input>
+                </b-form-group>
+            </form>
+            <b-button @click.prevent="updatePassword" variant="outline-danger" class="mr-2">Mudar a Senha</b-button>
+            <b-button @click="hideModal('update-password')" variant="outline-secondary">Cancelar</b-button>
+        </b-modal>
         <b-modal
         hide-footer
         id="delete-user"
@@ -14,7 +57,7 @@
             <form>
                 <b-form-group
                 label="Senha:"
-                label-for="password-input"                
+                label-for="password"                
                 >
                 <b-form-input
                     id="password-input"
@@ -24,8 +67,8 @@
                 ></b-form-input>
                 </b-form-group>
             </form>
-            <b-button @click.prevent="deleteUser" variant="outline-danger" class="mr-2">Sim, exclua minha conta</b-button>
-            <b-button variant="outline-secondary">Cancelar</b-button>
+            <b-button @click.prevent="removeUser" variant="outline-danger" class="mr-2">Sim, exclua minha conta</b-button>
+            <b-button @click="hideModal('delete-user')" variant="outline-secondary">Cancelar</b-button>
         </b-modal>
         <PageTitle title="Perfil do Usuário" subtitle="Atualize suas informações de usuário aqui." />
         <b-form >
@@ -75,37 +118,13 @@
             required
             ></b-form-input>
         </b-form-group>
-        <!-- <b-row>
-            <b-col sm="12" md="6">
-                <b-form-group id="user-password" label="Senha:" label-for="user-password">
-                        <b-form-input
-                        type="password"
-                        id="user-password"
-                        v-model="user.password"
-                        placeholder="Insira sua Senha"
-                        required
-                        ></b-form-input>
-                </b-form-group>
-
-            </b-col>
-            <b-col sm="12" md="6">
-                <b-form-group id="user-confirmPassword" label="Confirmação de Senha:" label-for="user-confirmPassword">
-                        <b-form-input
-                        type="password"
-                        id="user-confirmPassword"
-                        v-model="user.confirmPassword"
-                        placeholder="Confime sua Senha"
-                        required
-                        ></b-form-input>
-                </b-form-group>
-            </b-col>
-        </b-row> -->
-      <b-button :disabled="!edit" @click="updateUser" class="mr-2" variant="primary">Salvar Alterações</b-button>
-      <b-button :disabled="!edit" @click="edit = false" type="reset" variant="danger">Cancelar</b-button>
+      <b-button :disabled="!edit" @click="updateUser" variant="primary">Salvar Alterações</b-button>
+      <b-button :disabled="!edit" class="ml-2 mr-2" @click="edit = false" type="reset">Cancelar</b-button>
+      <b-button :disabled="!edit" v-b-modal.update-password variant="danger">Editar Senha</b-button>      
       <hr>
     </b-form>
     <div class="d-flex justify-content-between">
-        <b-button @click="edit = !edit" variant="warning"><i class="fas fa-edit"></i> Habilitar edição</b-button>
+        <b-button @click="edit = true" variant="warning"><i class="fas fa-edit"></i> Habilitar edição</b-button>
         <b-button v-b-modal.delete-user><i class="fas fa-trash"></i> Excluir a conta</b-button>
     </div>
     </div>
@@ -124,7 +143,7 @@ export default {
             user: {},
             edit: false,
             password: '',
-            passwords: '',
+            passwords: {},
         }
     },
     methods: {
@@ -139,23 +158,41 @@ export default {
                     setTimeout(() => {
                         localStorage.removeItem(key);
                         this.$store.commit('setUser', null);
-                        this.$router.push({ path: '/' });
+                        this.$router.push({ path: '/' }).catch(() => {});
                     }, 3000)
                 })
                 .catch((e) => this.$toasts.error(e.response.data))
         },
-        deleteUser() {
-            axios.delete(`/users/${this.user.id}`, this.password)
+        removeUser() {
+            const url  = `/users/${this.user.id}`;
+            const password = this.password;
+            axios.defaults.headers.userPassword = password;
+            axios.delete(url)
                 .then(() => {
                     this.$toasts.success('Essa conta foi removida.');
                     setTimeout(() => {
                         localStorage.removeItem(key);
                         this.$store.commit('setUser', null);
-                        this.$router.push({ path: '/' });
+                        this.$router.push({ path: '/' }).catch(() => {});
                     }, 3000)
                     })
                     .catch((e) => this.$toasts.error(e.response.data))
                 
+        },
+        updatePassword() {
+            axios.put(`/users/update/${this.user.id}`, this.passwords)
+                .then(() => { 
+                    this.$toasts.success('Senha alterada com sucesso!');
+                    setTimeout(() => {
+                        localStorage.removeItem(key);
+                        this.$store.commit('setUser', null);
+                        this.$router.push({ path: '/' }).catch(() => {});
+                    }, 3000)
+                    })
+                    .catch((e) => this.$toasts.error(e.response.data))
+        },
+        hideModal(id) {
+            this.$bvModal.hide(id)
         }
     },
     created() {
