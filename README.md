@@ -16,8 +16,8 @@ A aplicação é uma ferramenta simples de criação e controle de tarefas.
 ![Web 4](https://github.com/TXTDBR/assets/blob/master/gerenciador%20de%20tarefas/tarefa2.png)
 ![Web 5](https://github.com/TXTDBR/assets/blob/master/gerenciador%20de%20tarefas/perfil.png)
 
-## Modelo conceitual
-![Modelo Conceitual](https://github.com/TXTDBR/assets/blob/master/gerenciador%20de%20tarefas/uml-tasks.png)
+## Diagrama Entidade Relacionamento
+![Diagrama Entidade Relacionamento](https://github.com/TXTDBR/assets/blob/master/gerenciador%20de%20tarefas/uml-tasks.png)
 
 # Tecnologias utilizadas
 ## Back end
