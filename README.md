@@ -26,10 +26,12 @@ A aplicação é uma ferramenta simples de criação e controle de tarefas.
 - Express
 - PostgreSQL
 - Knex.js
-- Autenticação com Passport e estratégia JWT
+- Autenticação com Passport usando estratégia JWT
 ## Front end
-- HTML / CSS / JS
 - Vue JS
+- Vuex
+- Vue Router
+- HTML / CSS / JS
 - Bootstrap
 - vue-chartjs
 
