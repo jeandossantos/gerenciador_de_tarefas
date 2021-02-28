@@ -42,7 +42,7 @@ Pré-requisitos: Node JS 14.15.4
 
 ```bash
 # clonar repositório
-git clone https://github.com/TXTDBR/gerenciador_de_tarefas
+git clone https://github.com/TXTDBR/gerenciador_de_tarefas.git
 
 # entrar na pasta do projeto back end
 cd backend
@@ -57,7 +57,7 @@ Pré-requisitos: npm
 
 ```bash
 # clonar repositório
-git clone https://github.com/TXTDBR/gerenciador_de_tarefas
+git clone https://github.com/TXTDBR/gerenciador_de_tarefas.git
 
 # entrar na pasta do projeto front end web
 cd frontend
