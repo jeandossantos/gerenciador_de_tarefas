@@ -8,6 +8,7 @@ Gerenciador de Tarefas é uma aplicação full stack web.
 
 A aplicação é uma ferramenta simples de criação e controle de tarefas.
 
+### **_OBS:_** _Backend refeito com Typescript e TypeORM_ [Aqui](https://github.com/jeandossantos/tarefas_backend_ts)
 
 ## Layout da Aplicação
 ![Web 1](https://github.com/TXTDBR/assets/blob/master/gerenciador%20de%20tarefas/signin.png)
