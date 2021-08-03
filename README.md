@@ -2,7 +2,7 @@
 
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/TXTDBR/gerenciador_de_tarefas/blob/master/LICENSE) 
 
-# Sobre o projeto
+## Sobre o projeto
 
 Gerenciador de Tarefas é uma aplicação full stack web.
 
@@ -20,7 +20,7 @@ A aplicação é uma ferramenta simples de criação e controle de tarefas.
 ## Diagrama Entidade Relacionamento
 ![Diagrama Entidade Relacionamento](https://github.com/TXTDBR/assets/blob/master/gerenciador%20de%20tarefas/uml-tasks.png)
 
-# Tecnologias utilizadas
+## Tecnologias utilizadas
 ## Back end
 - Javascript
 - Node.js
@@ -36,9 +36,9 @@ A aplicação é uma ferramenta simples de criação e controle de tarefas.
 - Bootstrap
 - vue-chartjs
 
-# Como executar o projeto
+## Como executar o projeto
 
-## Back end
+### Back end
 Pré-requisitos: Node JS 14.15.4
 
 ```bash
@@ -70,6 +70,6 @@ npm install
 npm run serve
 ```
 
-# Autor
+## Autor
 
 Jean Francisco dos Santos
